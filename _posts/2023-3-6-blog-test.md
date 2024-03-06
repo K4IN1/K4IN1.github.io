@@ -1,13 +1,12 @@
 ---
 layout:     post
-title:      "如何评价 MIUI 6？"
-date:       2014-08-16 12:00:00
-author:     "Hux"
-header-img: "img/post-bg-miui6.jpg"
+title:      "博客搭建测试"
+date:       2023-3-6 20:00:00
+author:     "sjz"
+header-img: false
 tags:
-    - 知乎
-    - 产品
-    - UX/UI
+    - Meta
+
 ---
 
 > 这篇文章转载自[我在知乎上的回答](http://www.zhihu.com/question/24783844/answer/29286896)
