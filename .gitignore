@@ -6,3 +6,5 @@ node_modules/
 public/
 db.json
 _multiconfig.yml
+node_modules/
+dist/
