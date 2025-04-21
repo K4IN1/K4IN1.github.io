@@ -33,7 +33,7 @@ T265相机是配备了双目鱼眼+IMU的相机，内置有Intel自己的微处�
 
 ### RTAB_MAP
 
-RTAB_MAP可以接收视觉，2D激光和3D激光多种信息，进行建图保存、加载、定位，其功能较为完善，使用的tutorial也相对较多，缺点是性能开销较大，但是可以通过关闭3D显示相关的功能来缓解，或者直接使用RVIZ来可视化，另外其参数调整的空间也很大，比较适合建图重定位。 
+RTAB_MAP可以接收视觉，2D激光和3D激光多种信息，进行建图保存、加载、定位，其功能较为完善，使用的tutorial也相对较多，缺点是性能开销较大，但是可以通过关闭3D显示相关的功能来缓解，或者直接使用RVIZ来可视化，另外其参数调整的空间也很大，比较适合建图重定位。  
 
 # 安装和调试
 
@@ -59,7 +59,7 @@ sudo apt-get update
 ```
 
 然后就可以安装了  
-**注意:***安装全程请拔出相机。接下来的步骤需要查询并输入对应版本号，请直接从查询结果里复制，或者使用tab进行补全，本文的内容经过验证，但是文章输入难免有错误，请见谅。按照顺序进行，一旦有报错，请使用`sudo apt --fix-broken install`解决之后再进行下一步安装*
+> 注意:*安装全程请拔出相机。接下来的步骤需要查询并输入对应版本号，请直接从查询结果里复制，或者使用tab进行补全，本文的内容经过验证，但是文章输入难免有错误，请见谅。按照顺序进行，一旦有报错，请使用`sudo apt --fix-broken install`解决之后再进行下一步安装*
 使用`apt list -a librealsense2-dkms` 或者 `apt-cache madison librealsense2-dkms` 来查询软件包的版本
 依次安装udev-rules dkms 和其他的软件包
 
@@ -83,18 +83,24 @@ sudo apt-get insall librealsense2-dbg=2.50.0-0~realsense0.6127
 
 ## RTAB-MAP
 
-
 ### 安装
 
 直接参照RTABMAP_ROS [wiki 页面](https://github.com/introlab/rtabmap_ros#rtabmap_ros)  
+
 ### 建图
+
 查看rtabmap_ros的launch文件可以发现，每次启动的时候都需要去指定订阅的话题，以及一部分ros相关的参数，例如是否启动rviz，深度是否和RGB对齐等相关参数，具体的内容如下  
+
 #### **如果只使用D435/D415**  
+
 首先是启动realsenseros节点,其中的参数就是指把RGB和深度进行对齐，这样会多输出一个对齐后的topic
+
 ```bash
 roslaunch realsense2_camera rs_camera.launch align_depth:=true
 ```
+
 这个launch文件不会启用相机内的IMU功能，把相机当做纯RGBD相机使用，因此接下来使用RTABMAP时，需要启用视觉里程计算法。
+
 ```bash
 roslaunch rtabmap_launch rtabmap.launch \
     rtabmap_args:="--delete_db_on_start" \
@@ -103,9 +109,12 @@ roslaunch rtabmap_launch rtabmap.launch \
     camera_info_topic:=/camera/color/camera_info \
     approx_sync:=false
 ```
+
 建议测试完成后直接修改对应的launch文件，直接包含两个launch文件并修改参数，直接一键启动  
 参数的功能直接去看rtabmap_ros的.launch和他们的wiki，注释写的很详细
+
 #### 启动D435i/L515的IMU
+
 ```bash
 roslaunch realsense2_camera rs_camera.launch \
     align_depth:=true \
@@ -113,7 +122,9 @@ roslaunch realsense2_camera rs_camera.launch \
     enable_gyro:=true \
     enable_accel:=true
 ```
+
 为了把IMU数据转换成rtabmap可以订阅的格式，我们使用另外一个节点
+
 ```bash
 rosrun imu_filter_madgwick imu_filter_node \
     _use_mag:=false \
@@ -122,7 +133,9 @@ rosrun imu_filter_madgwick imu_filter_node \
     /imu/data_raw:=/camera/imu \
     /imu/data:=/rtabmap/imu
 ```
+
 随后启动rtabmap建图
+
 ```bash
  rtabmap_args:="--delete_db_on_start --Optimizer/GravitySigma 0.3" \
     depth_topic:=/camera/aligned_depth_to_color/image_raw \
@@ -132,13 +145,19 @@ rosrun imu_filter_madgwick imu_filter_node \
     wait_imu_to_init:=true \
     imu_topic:=/rtabmap/imu
 ```
+
 #### 使用D400/L515+T265外置里程计
-realsense内置了对应的launch文件，**请注意：***在使用launch文件之前，请使用rs_camera.launch单独打开每一个设备，在控制台的log中查看相机的SN，然后将对应的SN填入launch文件的arg中*
+
+realsense内置了对应的launch文件，
+> **请注意**：*在使用launch文件之前，请使用rs_camera.launch单独打开每一个设备，在控制台的log中查看相机的SN，然后将对应的SN填入launch文件的arg中*
 **请确保使用了官方的3D打印支架，如果二者之间的几何关系发生改变，请编辑launch文件中的TFNode启动参数，从而确保相机坐标转换的正确**
+
 ```bash
 roslaunch realsense2_camera rs_d400_and_t265.launch
 ```
+
 由于T265会自己计算里程计，因此不再需要启用视觉里程计算法
+
 ```bash
 roslaunch rtabmap_launch rtabmap.launch \
    args:="-d --Mem/UseOdomGravity true --Optimizer/GravitySigma 0.3" \
@@ -152,19 +171,21 @@ roslaunch rtabmap_launch rtabmap.launch \
    visual_odometry:=false \
    queue_size:=30
 ```
+
 你可以编写自己的launch文件，把上述需要更改的参数都丢进去，甚至可以参照rtabmap官方的ini文件，更改mapping的各种参数，然后启动的时候自动加载  
 例如下方的launch文件，参考rtabmap官方的launch文件，知道载入一个.ini文件既可以设定好mapping的参数，所以参照了rtabmap修改参数apply时控制台的输出，添加对应参数到.ini的[Core]下即可
+
 ```xml
 <launch>
-    <arg name="device_type_camera1"    		default="t265"/>
-    <arg name="device_type_camera2"    		default="d435"/>	
-    <arg name="serial_no_camera1"    			default=""/>
-    <arg name="serial_no_camera2"    			default=""/>
-    <arg name="camera1"              			default="t265"/>		<!-- Note: Replace with camera name -->
-    <arg name="camera2"              			default="d400"/>		<!-- Note: Replace with camera name -->
-    <arg name="clip_distance"             default="-2"/>
-    <arg name="use_rviz"                  default="true"/>
-    <arg name="use_rtabmapviz"            default="true"/>
+    <arg name="device_type_camera1"    default="t265"/>
+    <arg name="device_type_camera2"    default="d435"/>
+    <arg name="serial_no_camera1"      default=""/>
+    <arg name="serial_no_camera2"      default=""/>
+    <arg name="camera1"                default="t265"/>  <!-- Note: Replace with camera name -->
+    <arg name="camera2"                default="d400"/>  <!-- Note: Replace with camera name -->
+    <arg name="clip_distance"          default="-2"/>
+    <arg name="use_rviz"               default="true"/>
+    <arg name="use_rtabmapviz"         default="true"/>
     
 
     <include file="$(find realsense2_camera)/launch/rs_d400_and_t265.launch">
@@ -193,7 +214,9 @@ roslaunch rtabmap_launch rtabmap.launch \
     </include>
 </launch>
 ```
+
 随后是.ini文件
+
 ```ini
 [Core]
 Version = 0.20.23
@@ -558,33 +581,45 @@ g2o\PixelVariance = 1.0
 g2o\RobustKernelDelta = 8
 g2o\Solver = 0
 ```
+
 其实有很多参数根本就没有修改，但是因为保存的时候会自动保存，也就无所谓了  
 
 ### 保存
+
 为了保存建好的地图到2D Occupancy，我们需要使用map_server的map_saver 节点
 在上述建图运行时
-```bash 
+
+```bash
 rosrun map_server map_saver map:=/rtabmap/grid_map -f filename
 ```
+
 随后CTRL+C退出建图即可，rtabmap会自动保存database到.ros/下，请进行备份
 通过使用
-```bash
+
+``` bash
 rtabmapdatabase-Viewer .ros/rtabmap.db
 ```
+
 就可以预览刚才建立的.db了，既可以导出3D点云，Octomap地图，也可以对2D地图进行编辑，修改，删除地图中因噪声产生的错误点位。
+
 ### 重定位
+
 只需要在之前的launch文件中添加
-```xml
+
+``` xml
 <include file="$(find rtabmap_ros)/launch/rtabmap.launch">
 ...
         <arg name="localization"               value="true"/>
 ...
 d</include>
 ```
+
 或者运行launch文件的时候使用
-```bash
+
+``` bash
 roslaunch rtabmap_launch rtabmap.launch localization:=true
 ```
+
 即可开启定位
-**注意：***在使用定位的时候，尽量保证定位开始时，摄像头处于地图的起始位置，并且在节点启动时，不要让里程计有变化的输出值，不然会导致定位的漂移，需要重新启动定位才能解决*
-定位信息在`/rtabmap/localization_pose`topic内，里程计相对于地图的offset则在`/tf`中可以找到，根据之前保存的Occupancy地图和对应的yaml文件，就可以确定位置了。
+> **注意**：*在使用定位的时候，尽量保证定位开始时，摄像头处于地图的起始位置，并且在节点启动时，不要让里程计有变化的输出值，不然会导致定位的漂移，需要重新启动定位才能解决*  
+定位信息在`/rtabmap/localization_pose`topic内，里程计相对于地图的offset则在`/tf`中可以找到，根据之前保存的Occupancy地图和对应的yaml文件，就可以确定位置了。  

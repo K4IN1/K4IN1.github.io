@@ -9,8 +9,7 @@ categories:
 
 ---
 
-Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单
-====
+# Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单  
 
 Ubuntu默认所使用的gnome-terminal，虽然简洁好用，但是不能分多个窗口  
 我个人在使用过程中会出现输入卡顿，补全卡顿等问题，有时候很烦心  
@@ -85,8 +84,8 @@ gsettings set com.github.stunkymonkey.nautilus-open-any-terminal new-tab true
 gsettings set com.github.stunkymonkey.nautilus-open-any-terminal flatpak system
 ```
 
-建议参考Github原文章的参数 
+建议参考Github原文章的参数  
 
 2024.7.5
 
-15:43
+15:43  
