@@ -1,0 +1,688 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kaine Su">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Crazyflie集群配置这里使用了22.04lts以及ROS Humble python3.10 没有Conda或Venv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="crazyswarm2">
+<meta property="og:url" content="https://k4in1.github.io/2025/04/22/crazyswarm2/index.html">
+<meta property="og:site_name" content="Kaine的个人博客">
+<meta property="og:description" content="Crazyflie集群配置这里使用了22.04lts以及ROS Humble python3.10 没有Conda或Venv">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://k4in1.github.io/img/2025-04-22_1.png">
+<meta property="article:published_time" content="2025-04-22T07:17:34.000Z">
+<meta property="article:modified_time" content="2025-04-22T07:51:54.097Z">
+<meta property="article:author" content="Kaine Su">
+<meta property="article:tag" content="无人机">
+<meta property="article:tag" content="crazyswarm2">
+<meta property="article:tag" content="ros2">
+<meta property="article:tag" content="动捕">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://k4in1.github.io/img/2025-04-22_1.png">
+  
+  
+  
+  <title>crazyswarm2 - Kaine的个人博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"k4in1.github.io","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":100,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kaine&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">crazyswarm2</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-22 15:17" pubdate>
+          2025年4月22日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">crazyswarm2</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Crazyflie集群配置"><a href="#Crazyflie集群配置" class="headerlink" title="Crazyflie集群配置"></a>Crazyflie集群配置</h1><p>这里使用了22.04lts以及ROS Humble python3.10 没有Conda或Venv</p>
+<span id="more"></span>
+<h2 id="无人机固件与地址"><a href="#无人机固件与地址" class="headerlink" title="无人机固件与地址"></a>无人机固件与地址</h2><h3 id="安装cfclient"><a href="#安装cfclient" class="headerlink" title="安装cfclient"></a>安装cfclient</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip3 install cfclient<br></code></pre></td></tr></table></figure>
+
+<p>安装crazyflie客户端  </p>
+<blockquote>
+<p>terminal输入cfclient打开客户端</p>
+</blockquote>
+<p>为正常使用Radio，请记得参考<a target="_blank" rel="noopener" href="https://www.bitcraze.io/documentation/repository/crazyflie-lib-python/master/installation/usb_permissions/"><strong>USB permissions | Bitcraze</strong></a></p>
+<h3 id="刷写固件"><a href="#刷写固件" class="headerlink" title="刷写固件"></a>刷写固件</h3><h4 id="正常情况下更新固件"><a href="#正常情况下更新固件" class="headerlink" title="正常情况下更新固件"></a>正常情况下更新固件</h4><ol>
+<li><p>打开无人机开关，电机自检完成后，在cfclient左上角输入地址，点击<strong>Scan</strong>扫描，没找到就再点一下</p>
+</li>
+<li><p>在左边选择对应无人机的地址连接<br>连接成功点击菜单栏<strong>Connect-&gt;Bootloader</strong>，在下面选择cf2，然后选择对应版本的固件，需要Github的链接</p>
+</li>
+<li><p>点击右下角<strong>Program</strong>即可，无人机会重启数次，一直到左下角的Status显示为<strong>IDLE</strong>就完成了固件升级</p>
+</li>
+</ol>
+<h4 id="固件损坏情况下刷写固件"><a href="#固件损坏情况下刷写固件" class="headerlink" title="固件损坏情况下刷写固件"></a>固件损坏情况下刷写固件</h4><p>如果无人机不能正常启动，我们可以手动让他进入bootloader模式</p>
+<ol>
+<li><p>长按无人加按钮约3-5秒后松开，两盏蓝色的灯交替闪烁，即进入冷启动</p>
+</li>
+<li><p>同样使用cfclient，在<strong>Connect-&gt;Bootloader</strong>选择<strong>Coldboot</strong>选项卡</p>
+</li>
+<li><p>在这里点击<strong>Restart in bootloader mode</strong>，随后即可选择版本并且刷写固件</p>
+</li>
+</ol>
+<h3 id="更改无人机地址"><a href="#更改无人机地址" class="headerlink" title="更改无人机地址"></a>更改无人机地址</h3><p>无线链接无人机后，点<strong>Connect-&gt;configure 2.x</strong> 即可修改参数</p>
+<blockquote>
+<p>无人机地址格式类似为如下格式<br><code>0/80/2M/E7E7E7E7E7</code><br>第一位数字为使用的Radio，默认0使用找到的第一个radio，1则使用第二个radio<br>一般使用一个radio即可，若使用多个Radio则保证其均负载<br>第二位两个数字为信道，随后是带宽，一般选最高的2M<br>后面的为十六进制表示的地址，一般修改最后两位</p>
+</blockquote>
+<p>点击<strong>write</strong>写入，重启无人机即可应用更改</p>
+<h2 id="动捕配置"><a href="#动捕配置" class="headerlink" title="动捕配置"></a>动捕配置</h2><p>在动捕软件标定完成后，打开crazyflie开关，激活红外led marker，如有可能，关闭动捕摄像头的红外发射  </p>
+<blockquote>
+<p>先在设备左边栏，全部选中摄像头<br>在下面高级设置中更改补光强度，0即关闭红外  </p>
+</blockquote>
+<p>更改对应曝光时间和检测阈值，使得四个点被稳定的识别<br>标定刚体后，点击左边栏的传输设置，选择对应交换机组网下的ip，更改方向为z-up，开启vrpn刚体传输即可  </p>
+<h2 id="使用Crazyswarm"><a href="#使用Crazyswarm" class="headerlink" title="使用Crazyswarm"></a>使用Crazyswarm</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>可先参考Crazyswarm2的<a target="_blank" rel="noopener" href="https://imrclab.github.io/crazyswarm2/">官方文档</a><br>安装对应依赖</p>
+<p>随后新建一个ros2_ws&#x2F;src并进入该目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> --recursive https://github.com/K4IN1/crazyswarm2_ARIC.git<br></code></pre></td></tr></table></figure>
+
+<p>然后回到ros2_ws</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release<br></code></pre></td></tr></table></figure>
+
+<p>编译完成后记得<code>source install/setup.bash</code></p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>绝大多数配置的更改在crazyflie&#x2F;config中即可完成<br>主要修改的是motion_capture.yaml和crazyflies.yaml</p>
+<ul>
+<li><p>motioncap.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">ros__parameters:</span><br>  <span class="hljs-comment"># one of &quot;optitrack&quot;, &quot;optitrack_closed_source&quot;, &quot;vicon&quot;, &quot;qualisys&quot;, &quot;nokov&quot;, &quot;vrpn&quot;, &quot;motionanalysis&quot;</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">&quot;vrpn&quot;</span><br>  <span class="hljs-comment"># Specify the hostname or IP of the computer running the motion capture software</span><br>  <span class="hljs-attr">hostname:</span> <span class="hljs-string">&quot;169.254.210.141&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>将这里的ip改成动捕电脑的ip即可，记得修改网络的网段，手动指定同网段下的ip，例如169.254.210.200<br>可以通过<code>ping &lt;ip&gt;</code>的形式来确定网络连接</p>
+</li>
+<li><p>crazyflies.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">robots:</span><br><span class="hljs-attr">cf1:</span><br>  <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span> <span class="hljs-comment">#这里控制是否启用控制，防止意外连接到开机但是不使用的无人机</span><br>  <span class="hljs-comment"># uri: radio://0/20/2M/E7E7E7E7E9</span><br>  <span class="hljs-attr">uri:</span> <span class="hljs-string">radio://0/80/2M/E7E7E7E702</span> <span class="hljs-comment"># 更改这里的地址为需要控制的无人机</span><br>  <span class="hljs-attr">initial_position:</span> [<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>] <span class="hljs-comment">#仿真用，散点用，刚体不重要</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">cf21_mocap_deck</span> <span class="hljs-string">//与下面的robot_type相对应</span><br>  <span class="hljs-string">......</span><br>  <span class="hljs-attr">robot_types:</span><br><span class="hljs-attr">cf21:</span><br>  <span class="hljs-attr">motion_capture:</span><br>    <span class="hljs-attr">enabled:</span> <span class="hljs-literal">false</span><br>    <span class="hljs-comment"># only if enabled; see motion_capture.yaml</span><br>    <span class="hljs-attr">marker:</span> <span class="hljs-string">default_single_marker</span><br>    <span class="hljs-attr">dynamics:</span> <span class="hljs-string">default</span><br>  <span class="hljs-attr">big_quad:</span> <span class="hljs-literal">false</span><br>  <span class="hljs-attr">battery:</span><br>    <span class="hljs-attr">voltage_warning:</span> <span class="hljs-number">3.8</span>  <span class="hljs-comment"># V</span><br>    <span class="hljs-attr">voltage_critical:</span> <span class="hljs-number">3.7</span> <span class="hljs-comment"># V</span><br><br><span class="hljs-attr">cf21_mocap_deck:</span><br>  <span class="hljs-attr">motion_capture:</span><br>    <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span> <span class="hljs-string">//是否启用动捕</span> <span class="hljs-string">，这里有时会有bug，一般不会出错，如果有出现类似动捕定位失效的情况，可以将这里改成false看看</span><br>    <span class="hljs-comment"># only if enabled; see motion_capture.yaml</span><br>    <span class="hljs-attr">marker:</span> <span class="hljs-string">mocap_deck</span><br>    <span class="hljs-attr">dynamics:</span> <span class="hljs-string">default</span><br>  <span class="hljs-attr">big_quad:</span> <span class="hljs-literal">false</span><br>  <span class="hljs-attr">battery:</span><br>    <span class="hljs-attr">voltage_warning:</span> <span class="hljs-number">3.8</span>  <span class="hljs-comment"># V</span><br>    <span class="hljs-attr">voltage_critical:</span> <span class="hljs-number">3.7</span> <span class="hljs-comment"># V</span><br>  <span class="hljs-string">......</span><br><span class="hljs-attr">all:</span><br>  <span class="hljs-comment">#这里是全局生效的参数，一般不需要修改</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ros2 launch crazyflie launch.py <br></code></pre></td></tr></table></figure>
+<p>使用上述设置启动对应服务<br>会弹出rviz和nicegui的localhost网页界面</p>
+<blockquote>
+<p>通过手动移动无人机观测rviz中的无人机位置来确定动捕定位的情况<br>通过查看nicegui是否为白屏或crazyradio上的灯是否两栖或crazyflie左上角的灯是否为绿色闪烁，<strong>来确定无人机是否连接</strong><br>一切准备就绪即可运行python脚本<br>如要在vscode中直接运行需遵循下述条件</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python">...<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>(): <span class="hljs-comment">#定义main()</span><br><br>...<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>: <span class="hljs-comment">#独立执行入口</span><br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>即可<br>也可以通过crazyflie_example下的setup.cfg来指定程序入口，更改后需要重新<code>colcon build</code></p>
+<h2 id="具体函数使用方法"><a href="#具体函数使用方法" class="headerlink" title="具体函数使用方法"></a>具体函数使用方法</h2><h3 id="核心类Crazyswarm"><a href="#核心类Crazyswarm" class="headerlink" title="核心类Crazyswarm"></a>核心类Crazyswarm</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> crazyflie_py <span class="hljs-keyword">import</span> Crazyswarm<br>swarm = Crazyswarm()<br>timeHelper = swarm.timeHelper <span class="hljs-comment">#时间控制函数</span><br>timeHelper.sleep(<span class="hljs-number">2.0</span>) <span class="hljs-comment"># s</span><br>allcfs = swarm.allcfs<br><span class="hljs-comment">## 全局使用allcfs.func() 采用相对位置</span><br><span class="hljs-comment">#如</span><br>Z = <span class="hljs-number">0.5</span><br>allcfs.takeoff(targetHeight=Z, duration=Z+<span class="hljs-number">1.0</span>)  <span class="hljs-comment"># 绝对高度</span><br>timeHelper.sleep(Z+<span class="hljs-number">2.0</span>)<br>allcfs.goTo(...) <span class="hljs-comment"># 相对位置</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="个体类Crazyflie"><a href="#个体类Crazyflie" class="headerlink" title="个体类Crazyflie"></a>个体类Crazyflie</h3><p>一般从核心类中获取，可以为个体无人机单独执行某指令</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python">...<br>name1 = <span class="hljs-string">&#x27;cf1&#x27;</span> <span class="hljs-comment"># 与crazyflie.yaml对应</span><br>cf1:Crazyflie = swarm.allcfs.crazyfliesByName[name1]<br>allcfs.takeoff(targetHeight=Z, duration=<span class="hljs-number">2.0</span>) <span class="hljs-comment"># 全部起飞</span><br>timeHelper.sleep(Z+<span class="hljs-number">2.0</span>) <span class="hljs-comment"># 绝大多数函数立刻返回，因此要进行sleep（）</span><br>cf1.goTo([<span class="hljs-number">0.5</span>,<span class="hljs-number">0.5</span>,<span class="hljs-number">0.5</span>],yaw = <span class="hljs-number">0.0</span>,duration=<span class="hljs-number">3.0</span>) <span class="hljs-comment"># 只有cf1执行这个动作</span><br>timeHelper.sleep(<span class="hljs-number">4.0</span>)<br>...<br>allcfs.land(targetHeight=<span class="hljs-number">0.02</span>, duration=<span class="hljs-number">2.0</span>) <span class="hljs-comment"># 全部降落</span><br>timeHelper.sleep(<span class="hljs-number">2.0</span>)<br>...<br></code></pre></td></tr></table></figure>
+
+<p>更多指令直接参考源码，注释较为详细</p>
+<h3 id="轨迹格式"><a href="#轨迹格式" class="headerlink" title="轨迹格式"></a>轨迹格式</h3><p>参考<a target="_blank" rel="noopener" href="https://github.com/whoenig/uav_trajectories"><strong>Github_link</strong></a><br>通过路点或时间路点生成所需轨迹，执行轨迹请参考example&#x2F;figure8.py</p>
+<p>速度控制需参考cmd_full_state.<strong>py</strong><br>或者直接使用teleop Service cmd_vel_world<br>正如官方文档所示的</p>
+<p><img src="/../img/2025-04-22_1.png" srcset="/img/loading.gif" lazyload alt="官方文档截图">  </p>
+<!-- ![alt text](../img/2025-04-22_1.png)   -->
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%97%A0%E4%BA%BA%E6%9C%BA/" class="print-no-link">#无人机</a>
+      
+        <a href="/tags/crazyswarm2/" class="print-no-link">#crazyswarm2</a>
+      
+        <a href="/tags/ros2/" class="print-no-link">#ros2</a>
+      
+        <a href="/tags/%E5%8A%A8%E6%8D%95/" class="print-no-link">#动捕</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>crazyswarm2</div>
+      <div>https://k4in1.github.io/2025/04/22/crazyswarm2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Kaine Su</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/22/ZX300A-%E4%BD%8E%E5%BB%B6%E8%BF%9FUSBDAC/" title="适用于WalkmanZX300A的低延迟USBDAC">
+                        <span class="hidden-mobile">适用于WalkmanZX300A的低延迟USBDAC</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

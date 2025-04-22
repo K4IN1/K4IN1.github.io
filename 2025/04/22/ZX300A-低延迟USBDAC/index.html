@@ -1,0 +1,723 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kaine Su">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="修改固件解决WalkmanUSBDAC延迟问题背景索尼Walkman的USBDAC功能具有巨大延迟，对于简易的桌面HIFI来说极为不友好。观影倒是无所谓，但是游戏语音则会造成巨大的影响。之前无意中在GitHub上搜索了Sony关键字，找到了这个项目。他可以修改Walkman的固件，实现低延迟的PCM输出，与此同时还不会影响播放器的正常输出，于是尝试魔改我的ZX300A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="适用于WalkmanZX300A的低延迟USBDAC">
+<meta property="og:url" content="https://k4in1.github.io/2025/04/22/ZX300A-%E4%BD%8E%E5%BB%B6%E8%BF%9FUSBDAC/index.html">
+<meta property="og:site_name" content="Kaine的个人博客">
+<meta property="og:description" content="修改固件解决WalkmanUSBDAC延迟问题背景索尼Walkman的USBDAC功能具有巨大延迟，对于简易的桌面HIFI来说极为不友好。观影倒是无所谓，但是游戏语音则会造成巨大的影响。之前无意中在GitHub上搜索了Sony关键字，找到了这个项目。他可以修改Walkman的固件，实现低延迟的PCM输出，与此同时还不会影响播放器的正常输出，于是尝试魔改我的ZX300A">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-21T16:57:00.000Z">
+<meta property="article:modified_time" content="2025-04-22T07:09:58.638Z">
+<meta property="article:author" content="Kaine Su">
+<meta property="article:tag" content="Walkman">
+<meta property="article:tag" content="USBDAC">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>适用于WalkmanZX300A的低延迟USBDAC - Kaine的个人博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"k4in1.github.io","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":100,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kaine&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">适用于WalkmanZX300A的低延迟USBDAC</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-22 00:57" pubdate>
+          2025年4月22日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">适用于WalkmanZX300A的低延迟USBDAC</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="修改固件解决WalkmanUSBDAC延迟问题"><a href="#修改固件解决WalkmanUSBDAC延迟问题" class="headerlink" title="修改固件解决WalkmanUSBDAC延迟问题"></a>修改固件解决WalkmanUSBDAC延迟问题</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>索尼Walkman的USBDAC功能具有巨大延迟，对于简易的桌面HIFI来说极为不友好。观影倒是无所谓，但是游戏语音则会造成巨大的影响。<br>之前无意中在GitHub上搜索了Sony关键字，找到了这个<a target="_blank" rel="noopener" href="https://github.com/zhangboyang/llusbdac">项目</a>。他可以修改Walkman的固件，实现低延迟的PCM输出，与此同时还不会影响播放器的正常输出，于是尝试魔改我的ZX300A  </p>
+<span id="more"></span>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>关于固件：<em>Walkman的声音和固件版本有很大关系，这里建议多下几个<strong>不同版本</strong>的固件多试一试，选自己喜欢的固件去魔改</em></p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><p>这里选择ZX300A公认的最好固件V1.10，虽然没有了2.x版本的蓝牙输出功能，但是声音是真的好不少，下载地址请自行寻找<br>这里是使用了发行版Linux，Ubuntu22.04进行编译，最终修改完的固件依然要是用官方的windows更新文件进行安装，<em><strong>确保自己拥有对应的两个环境再进行操作</strong></em></p>
+<h3 id="安装需要使用的软件包"><a href="#安装需要使用的软件包" class="headerlink" title="安装需要使用的软件包"></a>安装需要使用的软件包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo apt install -y git make wget<br></code></pre></td></tr></table></figure>
+
+<h3 id="克隆代码"><a href="#克隆代码" class="headerlink" title="克隆代码"></a>克隆代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/zhangboyang/llusbdac.git<br></code></pre></td></tr></table></figure>
+
+<h3 id="准备工具"><a href="#准备工具" class="headerlink" title="准备工具"></a>准备工具</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> llusbdac/<br>./get_toolchain.sh<br></code></pre></td></tr></table></figure>
+
+<p>当出现以下内容时，就可以配置环境变量了  </p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">=== TO ADD COMPILER TO YOUR $PATH, PLEASE RUN ===<br></code></pre></td></tr></table></figure>
+
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">. setpath<br>arm-linux-gnueabinf-gcc --version<br></code></pre></td></tr></table></figure>
+
+<p>如果出现<code>gcc version x.x.x</code>就认为配置正确</p>
+<h2 id="准备Walkman源码"><a href="#准备Walkman源码" class="headerlink" title="准备Walkman源码"></a>准备Walkman源码</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>进入Sony的Linux Kernel源代码<a target="_blank" rel="noopener" href="https://oss.sony.net/Products/Linux/Audio/category01.html#ca3">下载界面</a><br>找到自己的型号，点进去下载对应的linux-kernel-3.xx.xx.tar.gz<br>在Linux系统下下载，可以直接用浏览器也可以用wget  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget &lt;下载链接&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="解压"><a href="#解压" class="headerlink" title="解压"></a>解压</h3><p>记得把下面的文件名改成你自己的  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> kernel<br>tar -xzf linux-kernel-3.10.26.tar.gz -C kernel<br><span class="hljs-built_in">cd</span> kernel<br><span class="hljs-built_in">cat</span> HowToBuild.txt<br></code></pre></td></tr></table></figure>
+
+<h3 id="获取配置文件"><a href="#获取配置文件" class="headerlink" title="获取配置文件"></a>获取配置文件</h3><p>复制输出的那一段<code>Kernel Configuration Infomation</code><br>注意其中的那一段路径<code>arch/arm/xxxxxx</code><br>每个人的不一定是一样的，然后复制对应的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cp</span> <span class="hljs-built_in">arch</span>/arm/configs/xxxxxxx .config<br></code></pre></td></tr></table></figure>
+
+<p>然后就可以开始编译了</p>
+<h3 id="编译配置文件"><a href="#编译配置文件" class="headerlink" title="编译配置文件"></a>编译配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- olddefconfig<br>make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- prepare<br>make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- scripts<br></code></pre></td></tr></table></figure>
+
+<p>等待编译完成即可，如果有Warning不用在意，Error则要自己想办法解决，每个人都不一样<br>一般是环境问题，缺什么装什么，充分利用搜索引擎</p>
+<h3 id="编译LLUSBDAC"><a href="#编译LLUSBDAC" class="headerlink" title="编译LLUSBDAC"></a>编译LLUSBDAC</h3><p>回到llusbdac目录，开始编译</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ../llusbdac/<br>make<br></code></pre></td></tr></table></figure>
+
+<p>最后有<code>sha256sum llusbdac.ko &gt; llusbdac.sha256</code>即可<br>把编译出来的llusbdac都保存好，复制到Windows备用</p>
+<h2 id="准备索尼更新软件"><a href="#准备索尼更新软件" class="headerlink" title="准备索尼更新软件"></a>准备索尼更新软件</h2><h3 id="下载更新器"><a href="#下载更新器" class="headerlink" title="下载更新器"></a>下载更新器</h3><ol>
+<li><p>前往<a target="_blank" rel="noopener" href="https://www.sony-asia.com/electronics/support/digital-music-players-nw-nwz-a-series">索尼亚洲官网</a>，寻找自己的型号和对应的Software。  </p>
+</li>
+<li><p>我这边也提供一个ZX300&#x2F;A的1.10<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1HWUimoB73ZijuToXG_xxJA">固件</a>（提取码：pfzc）。</p>
+</li>
+<li><p>运行更新软件，然后到更新器界面，先不要点击“我同意”和“下一步”。</p>
+</li>
+<li><p>打开Windows的任务管理器，右键打开<code>Software Update Tool</code>的<strong>文件所在的位置</strong>。</p>
+</li>
+<li><p>进入<code>Data/Device</code>目录，找到<code>NW_WM_FW.UPG</code>固件更新包并复制出来。</p>
+</li>
+</ol>
+<h3 id="解包固件"><a href="#解包固件" class="headerlink" title="解包固件"></a>解包固件</h3><ol>
+<li><p>下载<a target="_blank" rel="noopener" href="https://www.rockbox.org/wiki/SonyNWUPGTool">UPG工具</a></p>
+</li>
+<li><p>把这个工具和刚复制出来的固件放在同一个文件夹</p>
+</li>
+<li><p>打开Powershell或cmd，进入该目录，执行以下命令然后用Powershell或者cmd到这个目录下面</p>
+</li>
+<li><p>还是在UPG工具的网站，找到自己Series对应的codename,记住自己的codename，例如我的ZX300A对应 <code>nw-zx300</code>  </p>
+</li>
+<li><p>shell输入</p>
+ <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Powershell">.\upgtool<span class="hljs-literal">-v3</span>.exe <span class="hljs-literal">-d</span> <span class="hljs-literal">-e</span> <span class="hljs-literal">-o</span> UNPACK <span class="hljs-literal">-m</span> nw<span class="hljs-literal">-zx300</span> NW_WM_FW.UPG<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在目录下找到解包后的UNPACKx.bin文件，用文本编辑器打开UNPACK0.bin。</p>
+</li>
+<li><p>全选，看右下角的文件字符数，应该是8192个<br>直接拉到最后一行，找到<code>log &quot;UPDATED!&quot;</code>在他的上面添加LLUSBDAC相关的内容</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sleep</span> 3<br>mount -o remount,rw /contents<br>(<span class="hljs-built_in">cd</span> /contents &amp;&amp; busybox <span class="hljs-built_in">sha256sum</span> -c LLUSBDAC.SUM &amp;&amp; busybox sh LLUSBDAC.DAT &amp;&amp; <span class="hljs-built_in">rm</span> -f LLUSBDAC.SUM LLUSBDAC.DAT)<br>mount -o remount,ro /contents<br><span class="hljs-built_in">sync</span><br><span class="hljs-built_in">sync</span><br><span class="hljs-built_in">sleep</span> 3<br></code></pre></td></tr></table></figure>
+
+<p> 把最后的<code>0x00</code>删除对应的数量，一直到右下角为8192个字符  </p>
+</li>
+<li><p>然后重新打包UPG  </p>
+ <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">.\upgtool<span class="hljs-literal">-v3</span>.exe <span class="hljs-literal">-d</span> <span class="hljs-literal">-c</span> <span class="hljs-literal">-m</span> nw<span class="hljs-literal">-zx300</span> MYFW.UPG UNPACK0.bin UNPACK1.bin UNPACK2.bin UNPACK3.bin UNPACK4.bin UNPACK5.bin UNPACK6.bin UNPACK7.bin UNPACK8.bin<br></code></pre></td></tr></table></figure>
+
+<p> 随后就打包出来了对应的<code>MYFW.UPG</code><br> 插上你的Walkman，打开大容量储存设备功能</p>
+</li>
+</ol>
+<h3 id="替换原版固件"><a href="#替换原版固件" class="headerlink" title="替换原版固件"></a>替换原版固件</h3><ol>
+<li><p>使用Pip安装<code>wmi</code></p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">pip install -i https://opentuna.cn/pypi/web/simple wmi<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>执行安装脚本</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">python .\llusbdac_installer.py<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>勾选1、2项目即可,然后还是不要点击我同意和下一步</p>
+</li>
+<li><p>进入Walkman的目录，能找到<code>LLUSBDAC.DAT</code>和<code>LLUSBDAC.SUM</code>，这样就说明我们的内容上传成功了，直接关掉升级器</p>
+</li>
+<li><p>打开官方的升级软件，找到升级器的解压目录  </p>
+</li>
+<li><p>这个时候复制我们之前打包好的<code>MYFW.UPG</code>替换掉官方的那个<code>NW_WM_FW.UPG</code>然后重新命名<code>NW_WM_FW.UPG</code>  </p>
+</li>
+<li><p>按照提示完成安装就好，重启完了在USBDAC界面连按三下歌曲控制按键就可以了，重启播放器就可以关闭这个功能。</p>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%99%E7%A8%8B/" class="category-chain-item">教程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Walkman/" class="print-no-link">#Walkman</a>
+      
+        <a href="/tags/USBDAC/" class="print-no-link">#USBDAC</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>适用于WalkmanZX300A的低延迟USBDAC</div>
+      <div>https://k4in1.github.io/2025/04/22/ZX300A-低延迟USBDAC/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Kaine Su</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/04/22/crazyswarm2/" title="crazyswarm2">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">crazyswarm2</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/21/t265/" title="使用T265在rtabmap中定位建图">
+                        <span class="hidden-mobile">使用T265在rtabmap中定位建图</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

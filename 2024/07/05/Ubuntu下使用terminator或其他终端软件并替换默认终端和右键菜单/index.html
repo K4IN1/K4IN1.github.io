@@ -7,8 +7,11 @@
 
 <head>
   <meta charset="UTF-8">
+
   <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
   <link rel="icon" href="/img/fluid.png">
+  
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -16,21 +19,23 @@
   <meta name="author" content="Kaine Su">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单Ubuntu默认所使用的gnome-terminal，虽然简洁好用，但是不能分多个窗口我个人在使用过程中会出现输入卡顿，补全卡顿等问题，有时候很烦心使用一个外观更加现代，功能更加丰富，性能强大的Terminal，可以提高我们的效率">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://k4in1.github.io/2024/06/28/hello-world/index.html">
+<meta property="og:title" content="Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单">
+<meta property="og:url" content="https://k4in1.github.io/2024/07/05/Ubuntu%E4%B8%8B%E4%BD%BF%E7%94%A8terminator%E6%88%96%E5%85%B6%E4%BB%96%E7%BB%88%E7%AB%AF%E8%BD%AF%E4%BB%B6%E5%B9%B6%E6%9B%BF%E6%8D%A2%E9%BB%98%E8%AE%A4%E7%BB%88%E7%AB%AF%E5%92%8C%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95/index.html">
 <meta property="og:site_name" content="Kaine的个人博客">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单Ubuntu默认所使用的gnome-terminal，虽然简洁好用，但是不能分多个窗口我个人在使用过程中会出现输入卡顿，补全卡顿等问题，有时候很烦心使用一个外观更加现代，功能更加丰富，性能强大的Terminal，可以提高我们的效率">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-06-28T04:25:24.972Z">
-<meta property="article:modified_time" content="2024-06-28T04:25:24.972Z">
+<meta property="article:published_time" content="2024-07-05T02:12:31.000Z">
+<meta property="article:modified_time" content="2025-04-22T07:09:58.637Z">
 <meta property="article:author" content="Kaine Su">
+<meta property="article:tag" content="Ubuntu">
+<meta property="article:tag" content="终端">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Hello World - Kaine的个人博客</title>
+  <title>Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单 - Kaine的个人博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -47,7 +52,7 @@
 <!-- 主题依赖的图标库，不要自行修改 -->
 <!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
 
 
 
@@ -68,7 +73,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"k4in1.github.io","root":"/","version":"1.9.7","typing":{"enable":false,"typeSpeed":100,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"k4in1.github.io","root":"/","version":"1.9.8","typing":{"enable":false,"typeSpeed":100,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -196,7 +201,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">Hello World</span>
+            <span id="subtitle">Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单</span>
           
         </div>
 
@@ -207,8 +212,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-06-28 12:25" pubdate>
-          2024年6月28日 中午
+        <time datetime="2024-07-05 10:12" pubdate>
+          2024年7月5日 上午
         </time>
       </span>
     
@@ -219,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          18 字
+          713 字
         
       </span>
     
@@ -230,7 +235,7 @@
         
         
         
-          1 分钟
+          6 分钟
         
       </span>
     
@@ -267,24 +272,39 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Hello World</h1>
+            <h1 id="seo-header">Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单</h1>
             
             
               <div class="markdown-body">
                 
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
+                <h1 id="Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单"><a href="#Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单" class="headerlink" title="Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单"></a>Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单</h1><p>Ubuntu默认所使用的gnome-terminal，虽然简洁好用，但是不能分多个窗口<br>我个人在使用过程中会出现输入卡顿，补全卡顿等问题，有时候很烦心<br>使用一个外观更加现代，功能更加丰富，性能强大的Terminal，可以提高我们的效率</p>
+<span id="more"></span>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
+<h2 id="请注意区分"><a href="#请注意区分" class="headerlink" title="请注意区分"></a>请注意区分</h2><p>Terminal与Shell是不同的</p>
+<ul>
+<li>Terminal是用来显示Shell，与Shell交互的界面  </li>
+<li>Shell则是系统内核Core外层，与Core进行交互的一层</li>
+</ul>
+<p>在GUI环境下理论上不存在真正的Terminal，所以你看到这些TerminalGUI往往都会带有Simulator的字样<br>在22.04版本中，需要使用<code>Ctrl+Alt+F3/4/5/6</code>来进入不同Ternimal，这个才是Ubuntu真正的终端。<br>退出请尝试<code>Ctrl+Alt+F1/2/7</code>，或在终端输入用户名密码登陆后尝试<code>starx</code>命令  </p>
+<h2 id="安装你选择的终端软件"><a href="#安装你选择的终端软件" class="headerlink" title="安装你选择的终端软件"></a>安装你选择的终端软件</h2><p>例如安装Terminator</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt install terminator<br></code></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
+<p>或者从.deb .AppImage 等软件包安装<br>请确保你知道软件安装的位置</p>
+<h2 id="替换默认终端的快捷键"><a href="#替换默认终端的快捷键" class="headerlink" title="替换默认终端的快捷键"></a>替换默认终端的快捷键</h2><p>使用<code>Ctrl+Alt+T</code>就可以快捷打开终端<br>有的终端软件在安装之后就会自动替换该快捷键<br>如果没有替换，请使用如下指令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">gsettings set org.gnome.desktop.default-applications.terminal exec /usr/bin/terminator<br>gsettings set org.gnome.desktop.default-applications.terminal exec-arg &quot;-x&quot;<br></code></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
+<p>请把<code>exec</code>后的路径更换成你自己终端的路径<br>要还原初始，请使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">gsettings reset org.gnome.desktop.default-applications.terminal exec<br>gsettings reset org.gnome.desktop.default-applications.terminal exec-arg<br></code></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>也可以通过间接启动的方式  </p>
+<p>1.打开Gnome-terminal，转到你的Profile预设，选择Command命令选项卡<br>2.勾选运行自定义命令而不是Shell<br>3.在自定义命令中键入运行你的Termimal 例如<code>terminator</code>  </p>
+<p>如果需要恢复，请使用<code>gnome-terminal --preferences</code>打开选项卡，并取消勾选上述选项</p>
+<h2 id="替换右键菜单"><a href="#替换右键菜单" class="headerlink" title="替换右键菜单"></a>替换右键菜单</h2><p>如果是按照上述第二种方法，此时右键菜单应该已经可用<br>选择在此打开Terminal即可打开你的自定义终端<br>如果没有生效，可以使用这个nautilus<a target="_blank" rel="noopener" href="https://github.com/Stunkymonkey/nautilus-open-any-terminal">插件</a><br>这个插件会增加一个新的右键菜单，在当前目录下启动你的终端<br>该插件同时也支持Caja文件管理器，几乎支持所有的主流终端软件，但是需要自己做一些简单的配置<br>建议从源代码安装，安装完成后<code>nautilus -q</code>重新启动文件管理器即可<br>要配置该拓展，需要使用命令行或者dconf-editor<br>通过编辑<code>com.github.stunkymonkey.nautilus-open-any-terminal</code>中的四个不同参数即可  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal alacritty<br>gsettings set com.github.stunkymonkey.nautilus-open-any-terminal keybindings &#x27;&lt;Ctrl&gt;&lt;Alt&gt;t&#x27;<br>gsettings set com.github.stunkymonkey.nautilus-open-any-terminal new-tab true<br>gsettings set com.github.stunkymonkey.nautilus-open-any-terminal flatpak system<br></code></pre></td></tr></table></figure>
+
+<p>建议参考Github原文章的参数  </p>
+<p>2024.7.5</p>
+<p>15:43  </p>
 
                 
               </div>
@@ -293,6 +313,36 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%99%E7%A8%8B/" class="category-chain-item">教程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Ubuntu/" class="print-no-link">#Ubuntu</a>
+      
+        <a href="/tags/%E7%BB%88%E7%AB%AF/" class="print-no-link">#终端</a>
+      
+    </div>
   
 </div>
 
@@ -302,8 +352,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Hello World</div>
-      <div>https://k4in1.github.io/2024/06/28/hello-world/</div>
+      <div>Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单</div>
+      <div>https://k4in1.github.io/2024/07/05/Ubuntu下使用terminator或其他终端软件并替换默认终端和右键菜单/</div>
     </div>
     <div class="license-meta">
       
@@ -315,7 +365,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年6月28日</div>
+          <div>2024年7月5日</div>
         </div>
       
       
@@ -328,7 +378,7 @@
               
                 <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-by"></i>
+                    <i class="iconfont icon-cc-by"></i>
                   </span>
                 </a>
               
@@ -346,6 +396,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/08/06/%E5%9F%BA%E4%BA%8Erealsense%E7%9B%B8%E6%9C%BA%E5%92%8Crtabmap-ros%E7%9A%84SLAM%E5%BB%BA%E5%9B%BE%E4%B8%8E%E9%87%8D%E5%AE%9A%E4%BD%8D/" title="基于realsense相机和rtabmap_ros的SLAM建图与重定位">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">基于realsense相机和rtabmap_ros的SLAM建图与重定位</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
@@ -457,7 +513,6 @@
     <div class="footer-content">
        <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
     </div>
-  
   
   
   
